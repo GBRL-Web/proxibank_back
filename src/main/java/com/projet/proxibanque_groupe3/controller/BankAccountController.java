@@ -1,7 +1,7 @@
 package com.projet.proxibanque_groupe3.controller;
 
 import com.projet.proxibanque_groupe3.model.BankAccount;
-import com.projet.proxibanque_groupe3.model.Transfert;
+import com.projet.proxibanque_groupe3.model.Transfer;
 import com.projet.proxibanque_groupe3.service.BankAccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +64,10 @@ public class BankAccountController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/transfert")
-    public ResponseEntity postMakeTransfert(@Valid @RequestBody Transfert transfert){
+    @PostMapping("/transfer")
+    public ResponseEntity<String> postTransfer(@Valid @RequestBody Transfer transfer){
         try {
-            bankAccountService.makeTransfert(transfert);
+            bankAccountService.makeTransfer(transfer);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

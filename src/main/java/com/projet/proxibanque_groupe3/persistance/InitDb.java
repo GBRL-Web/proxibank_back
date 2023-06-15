@@ -22,20 +22,20 @@ public class InitDb {
     private AuthService authService;
 
     @PostConstruct
-    public void initDb(){
+    public void initDb() {
 
         // Création du personnel de l'agence
         Agency agency = new Agency("Agence Tout risque");
         Employee director = new Employee("Bonneau", "Jean", "director");
         Employee counselor1 = new Employee("Peuplu", "Jean", "counselor");
         Employee counselor2 = new Employee("Aimarre", "Jean", "counselor");
-        Employee counselor3 = new Employee("Sérien", "Jean", "counselor");
+        Employee counselor3 = new Employee("Serien", "Jean", "counselor");
 
         // Création et affectation des logins/mdp
         AuthInfos authInfosDirector = authService.createAuthinfos(director);
         AuthInfos authInfosCounselor1 = authService.createAuthinfos(counselor1);
         AuthInfos authInfosCounselor2 = authService.createAuthinfos(counselor2);
-        AuthInfos authInfosCounselor3 =  authService.createAuthinfos(counselor3);
+        AuthInfos authInfosCounselor3 = authService.createAuthinfos(counselor3);
         director.setAuthInfos(authInfosDirector);
         authInfosDirector.setEmployee(director);
         counselor1.setAuthInfos(authInfosCounselor1);
@@ -46,23 +46,24 @@ public class InitDb {
         authInfosCounselor3.setEmployee(counselor3);
 
         // Création des clients
-        Client client1 = new Client("Racine", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client2 = new Client("Fonce", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client3 = new Client("Saigne", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client4 = new Client("Foutpaune", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client5 = new Client("Balle", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client6 = new Client("Bonbeurre", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client7 = new Client("Tanrien", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client8 = new Client("Conépa", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client9 = new Client("Terre", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client10 = new Client("Tanleloulerenaretlabelette", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client11 = new Client("Transene", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client12 = new Client("Tissipe", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client13 = new Client("Tanlamer", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client14 = new Client("Peste", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client15 = new Client("Darmerie", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client16 = new Client("Cive", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
-        Client client17 = new Client("Breille", "Jean", "1 rue du Test", "00000", "TestVille", "0000000000");
+        Client client1 = new Client("Racine", "Jean", "10 Rue de la Liberté", "75001", "Paris", "0123456789");
+        Client client2 = new Client("Fonce", "Paul", "25 Avenue des Champs-Élysées", "75008", "Paris", "0678901234");
+        Client client3 = new Client("Saigne", "Marie", "5 Rue du Commerce", "69002", "Lyon", "0456789123");
+        Client client4 = new Client("Foutpaune", "Claire", "12 Rue des Lilas", "33000", "Bordeaux", "0567891234");
+        Client client5 = new Client("Balle", "Pierre", "8 Place de la République", "44000", "Nantes", "0789123456");
+        Client client6 = new Client("Bonbeurre", "Luc", "15 Rue du Vieux Port", "13001", "Marseille", "0891234567");
+        Client client7 = new Client("Tanrien", "Sophie", "20 Rue des Roses", "59000", "Lille", "0123456789");
+        Client client8 = new Client("Conépa", "Thomas", "3 Avenue des Acacias", "67000", "Strasbourg", "0678901234");
+        Client client9 = new Client("Terre", "Emma", "6 Rue des Artisans", "54000", "Nancy", "0456789123");
+        Client client10 = new Client("Tanleloulerenaretlabelette", "Alex", "18 Rue de la Paix", "69003", "Lyon",
+                "0567891234");
+        Client client11 = new Client("Transene", "Laura", "9 Boulevard Saint-Michel", "75005", "Paris", "0678901234");
+        Client client12 = new Client("Tissipe", "David", "14 Avenue de la Gare", "67000", "Strasbourg", "0789123456");
+        Client client13 = new Client("Tanlamer", "Sophia", "22 Rue du Pont Neuf", "31000", "Toulouse", "0891234567");
+        Client client14 = new Client("Peste", "Hugo", "11 Rue des Violettes", "06000", "Nice", "0123456789");
+        Client client15 = new Client("Darmerie", "Julie", "7 Place de l'Église", "35000", "Rennes", "0678901234");
+        Client client16 = new Client("Cive", "Antoine", "4 Avenue de la Libération", "44000", "Nantes", "0456789123");
+        Client client17 = new Client("Breille", "Manon", "13 Rue des Moulins", "69004", "Lyon", "0567891234");
 
         // Création des comptes
         CheckingAccount checkingAccount1 = new CheckingAccount(5000F, 500F);
@@ -115,8 +116,8 @@ public class InitDb {
         // Affectation des clients aux conseillers
         director.addClient(client1);
         client1.setCounselor(director);
-//        counselor1.addClient(client1);
-//        client1.setCounselor(counselor1);
+        // counselor1.addClient(client1);
+        // client1.setCounselor(counselor1);
         counselor1.addClient(client2);
         client2.setCounselor(counselor1);
         counselor1.addClient(client3);
@@ -242,12 +243,16 @@ public class InitDb {
         agencyRepository.save(agency);
 
         // Create transactions
-        Transaction transaction1 = new Transaction(LocalDate.now(), checkingAccount1.getAccountNumber(), "Virement vers compte n°" + savingAccount1.getAccountNumber(), 200F);
-        Transaction transaction2 = new Transaction(LocalDate.now(), savingAccount1.getAccountNumber(), "Virement depuis compte n°" + checkingAccount1.getAccountNumber(), 200F);
-        Transaction transaction3 = new Transaction(LocalDate.parse("2023-05-01"), checkingAccount3.getAccountNumber(), "Retrait", 500F);
-        Transaction transaction4 = new Transaction(LocalDate.parse("2023-05-01"), checkingAccount8.getAccountNumber(), "Dépot", 100F);
+        Transaction transaction1 = new Transaction(LocalDate.now(), checkingAccount1.getAccountNumber(),
+                "Virement vers compte n°" + savingAccount1.getAccountNumber(), 200F);
+        Transaction transaction2 = new Transaction(LocalDate.now(), savingAccount1.getAccountNumber(),
+                "Virement depuis compte n°" + checkingAccount1.getAccountNumber(), 200F);
+        Transaction transaction3 = new Transaction(LocalDate.parse("2023-05-01"), checkingAccount3.getAccountNumber(),
+                "Retrait", 500F);
+        Transaction transaction4 = new Transaction(LocalDate.parse("2023-05-01"), checkingAccount8.getAccountNumber(),
+                "Dépot", 100F);
 
-        //persist
+        // persist
         transactionRepository.saveAll(List.of(transaction1, transaction2, transaction3, transaction4));
     }
 }

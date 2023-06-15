@@ -4,7 +4,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("Compte épargne")
+@DiscriminatorValue("Savings")
 public class SavingAccount extends BankAccount {
 
     private Float rate;

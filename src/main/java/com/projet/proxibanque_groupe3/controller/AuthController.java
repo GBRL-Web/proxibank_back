@@ -2,11 +2,11 @@ package com.projet.proxibanque_groupe3.controller;
 
 import com.projet.proxibanque_groupe3.model.AuthInfos;
 import com.projet.proxibanque_groupe3.model.Employee;
+import com.projet.proxibanque_groupe3.responder.LoginResponse;
 import com.projet.proxibanque_groupe3.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +38,14 @@ public class AuthController {
 
     @CrossOrigin(origins = "*")
     @PostMapping("/login")
-    public ResponseEntity login(@Valid @RequestBody AuthInfos authInfos){
-        Employee employee = null;
+    public LoginResponse login(@Valid @RequestBody AuthInfos authInfos){
+        LoginResponse response = new LoginResponse();
         try {
-            employee = authService.checkCredentials(authInfos);
+            Employee employee = authService.checkCredentials(authInfos);
+        response.setEmployee(employee);
         } catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            response.setErrorMessage(e.getMessage());
         }
-        return ResponseEntity.ok().body(employee);
+        return response;
     }
 }

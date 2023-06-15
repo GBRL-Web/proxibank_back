@@ -3,7 +3,7 @@ package com.projet.proxibanque_groupe3.service;
 import com.projet.proxibanque_groupe3.ProxibanqueGroupe3Application;
 import com.projet.proxibanque_groupe3.model.BankAccount;
 import com.projet.proxibanque_groupe3.model.CheckingAccount;
-import com.projet.proxibanque_groupe3.model.Transfert;
+import com.projet.proxibanque_groupe3.model.Transfer;
 import com.projet.proxibanque_groupe3.persistance.BankAccountRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,28 +47,28 @@ public class BankAccountService {
         return bankAccount;
     }
 
-    public void makeTransfert(Transfert transfert) throws Exception {
+    public void makeTransfer(Transfer transfer) throws Exception {
 
         // Check if the accounts are differents
-        if (transfert.getAccountNumberCredited().equals(transfert.getAccountNumberDebited())){
+        if (transfer.getToAccount().equals(transfer.getFromAccount())){
             logger.warn("Virement impossible : les deux numéros de comptes reçus sont identiques.");
             throw new Exception("Les deux numéros de compte indiqués sont identiques.");
         }
 
         // Check debited account solvability
-        BankAccount accountDebited = bankAccountRepository.getBankAccountByAccountNumber(transfert.getAccountNumberDebited()).get();
-        if(accountDebited instanceof CheckingAccount c && (c.getBalance() + c.getOverdraft() < transfert.getAmount())){
+        BankAccount accountDebited = bankAccountRepository.getBankAccountByAccountNumber(transfer.getFromAccount()).get();
+        if(accountDebited instanceof CheckingAccount c && (c.getBalance() + c.getOverdraft() < transfer.getAmount())){
             logger.warn("Virement impossible : solde insuffisant.");
             throw new Exception("Solde insuffisant pour effectuer un virement.");
         }
 
         // Transfert
-        BankAccount accountCredited = bankAccountRepository.getBankAccountByAccountNumber(transfert.getAccountNumberCredited()).get();
-        accountDebited.setBalance(accountDebited.getBalance() - transfert.getAmount());
-        accountCredited.setBalance(accountCredited.getBalance() + transfert.getAmount());
+        BankAccount accountCredited = bankAccountRepository.getBankAccountByAccountNumber(transfer.getToAccount()).get();
+        accountDebited.setBalance(accountDebited.getBalance() - transfer.getAmount());
+        accountCredited.setBalance(accountCredited.getBalance() + transfer.getAmount());
 
         // Call the TransactionService to create the trasactions
-        transactionService.createTransaction(accountDebited.getAccountNumber(), "Virement vers compte n°" + accountCredited.getAccountNumber(), transfert.getAmount());
-        transactionService.createTransaction(accountCredited.getAccountNumber(), "Virement recu  du compte n°" + accountDebited.getAccountNumber(), transfert.getAmount());
+        transactionService.createTransaction(accountDebited.getAccountNumber(), "Virement vers compte n°" + accountCredited.getAccountNumber(), transfer.getAmount());
+        transactionService.createTransaction(accountCredited.getAccountNumber(), "Virement recu  du compte n°" + accountDebited.getAccountNumber(), transfer.getAmount());
     }
 }

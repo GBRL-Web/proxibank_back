@@ -1,7 +1,7 @@
 package com.projet.proxibanque_groupe3.aspect;
 
 import com.projet.proxibanque_groupe3.ProxibanqueGroupe3Application;
-import com.projet.proxibanque_groupe3.model.Transfert;
+import com.projet.proxibanque_groupe3.model.Transfer;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -17,8 +17,8 @@ public class BankAccountServiceAspect {
 
     @Around("execution(* com.projet.proxibanque_groupe3.service.BankAccountService.makeTransfert(..)) &&" +
             "args(transfert,..)")
-    public void logTransfert(ProceedingJoinPoint joinPoint, Transfert transfert) throws Throwable {
+    public void logTransfert(ProceedingJoinPoint joinPoint, Transfer transfert) throws Throwable {
         joinPoint.proceed();
-        logger.warn("Transfert du compte n°" + transfert.getAccountNumberDebited() + " au compte n°" + transfert.getAccountNumberCredited() + " et d'un montant de " + transfert.getAmount() + " euros.");
+        logger.warn("Transfert du compte n°" + transfert.getFromAccount() + " au compte n°" + transfert.getToAccount() + " et d'un montant de " + transfert.getAmount() + " euros.");
     }
 }

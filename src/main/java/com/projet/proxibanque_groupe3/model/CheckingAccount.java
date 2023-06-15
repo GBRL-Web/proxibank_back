@@ -4,7 +4,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("Compte courant")
+@DiscriminatorValue("Active")
 public class CheckingAccount extends BankAccount {
     private enum card {
         VISA,

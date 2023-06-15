@@ -2,7 +2,7 @@ package com.projet.proxibanque_groupe3.service;
 
 import com.projet.proxibanque_groupe3.model.BankAccount;
 import com.projet.proxibanque_groupe3.model.CheckingAccount;
-import com.projet.proxibanque_groupe3.model.Transfert;
+import com.projet.proxibanque_groupe3.model.Transfer;
 import com.projet.proxibanque_groupe3.persistance.BankAccountRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,13 +94,13 @@ class BankAccountServiceTest {
     @Test
 void makeTransfert_shouldThrowException_whenAccountNumbersAreTheSame() {
     // Set up the test data
-    Transfert transfert = new Transfert(null, null, null);
-    transfert.setAccountNumberDebited(12345678);
-    transfert.setAccountNumberCredited(12345678);
+    Transfer transfert = new Transfer(null, null, null);
+    transfert.setFromAccount(12345678);
+    transfert.setToAccount(12345678);
     transfert.setAmount(1000f);
 
     // Call the method and assert that an exception is thrown
-    assertThrows(Exception.class, () -> bankAccountService.makeTransfert(transfert));
+    assertThrows(Exception.class, () -> bankAccountService.makeTransfer(transfert));
 }
 
 @Test
@@ -114,16 +114,16 @@ void makeTransfert_shouldThrowException_whenDebitedAccountHasInsufficientBalance
     BankAccount accountCredited = new BankAccount();
     accountCredited.setAccountNumber(87654321);
 
-    Transfert transfert = new Transfert(null, null, null);
-    transfert.setAccountNumberDebited(accountDebited.getAccountNumber());
-    transfert.setAccountNumberCredited(accountCredited.getAccountNumber());
+    Transfer transfert = new Transfer(null, null, null);
+    transfert.setFromAccount(accountDebited.getAccountNumber());
+    transfert.setToAccount(accountCredited.getAccountNumber());
     transfert.setAmount(2000.0f);
 
     // Set up the mock for bankAccountRepository.getBankAccountByAccountNumber
     when(bankAccountRepository.getBankAccountByAccountNumber(accountDebited.getAccountNumber())).thenReturn(Optional.of(accountDebited));
 
     // Call the method and assert that an exception is thrown
-    assertThrows(Exception.class, () -> bankAccountService.makeTransfert(transfert));
+    assertThrows(Exception.class, () -> bankAccountService.makeTransfer(transfert));
 }
 
 @Test
@@ -138,9 +138,9 @@ void makeTransfert_shouldMakeTransfert_whenDataIsValid() throws Exception {
     accountCredited.setAccountNumber(87654321);
     accountCredited.setBalance(3000.0f);
 
-    Transfert transfert = new Transfert(null, null, null);
-    transfert.setAccountNumberDebited(accountDebited.getAccountNumber());
-    transfert.setAccountNumberCredited(accountCredited.getAccountNumber());
+    Transfer transfert = new Transfer(null, null, null);
+    transfert.setFromAccount(accountDebited.getAccountNumber());
+    transfert.setToAccount(accountCredited.getAccountNumber());
     transfert.setAmount(2000.0f);
 
     // Set up the mock for bankAccountRepository.getBankAccountByAccountNumber
@@ -148,7 +148,7 @@ void makeTransfert_shouldMakeTransfert_whenDataIsValid() throws Exception {
     when(bankAccountRepository.getBankAccountByAccountNumber(accountCredited.getAccountNumber())).thenReturn(Optional.of(accountCredited));
 
     // Call the method
-    bankAccountService.makeTransfert(transfert);
+    bankAccountService.makeTransfer(transfert);
 
     // Assert that the balances of both accounts are updated
     assertEquals(3000.0f, accountDebited.getBalance());
