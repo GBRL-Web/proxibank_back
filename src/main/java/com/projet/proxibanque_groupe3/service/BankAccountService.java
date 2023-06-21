@@ -28,7 +28,7 @@ public class BankAccountService {
         Optional<Set<BankAccount>> bankAccounts = null;
         try {
             bankAccounts = bankAccountRepository.getBankAccountsByClient_Id((long)id);
-            logger.info("Les comptes du clients d'id " + id + " ont été récupérés avec succès de la base de données.");
+            logger.info("Client - ID [" + id + "] Successful retrieval of accounts from database.");
         } catch (Exception e){
             logger.error(e.getMessage());
         }
@@ -40,26 +40,26 @@ public class BankAccountService {
         Optional<BankAccount> bankAccount = null;
         try {
             bankAccount = bankAccountRepository.getBankAccountByAccountNumber(accountnumber);
-            logger.info("Compte numéro " + accountnumber + " récupéré avec succès.");
+            logger.info("Account [" + accountnumber + "] Successfully retrieved from database.");
         } catch (Exception e){
             logger.error(e.getMessage());
         }
         return bankAccount;
     }
 
-    public void makeTransfer(Transfer transfer) throws Exception {
+    public void transferTo(Transfer transfer) throws Exception {
 
         // Check if the accounts are differents
         if (transfer.getToAccount().equals(transfer.getFromAccount())){
-            logger.warn("Virement impossible : les deux numéros de comptes reçus sont identiques.");
-            throw new Exception("Les deux numéros de compte indiqués sont identiques.");
+            logger.warn("Transfer impossible. The transfer account numbers used are identical.");
+            throw new Exception("Transfer impossible. The transfer account numbers used are identical.");
         }
 
         // Check debited account solvability
         BankAccount accountDebited = bankAccountRepository.getBankAccountByAccountNumber(transfer.getFromAccount()).get();
         if(accountDebited instanceof CheckingAccount c && (c.getBalance() + c.getOverdraft() < transfer.getAmount())){
-            logger.warn("Virement impossible : solde insuffisant.");
-            throw new Exception("Solde insuffisant pour effectuer un virement.");
+            logger.warn("Transfer impossible. Not enough funds to transfer.");
+            throw new Exception("Transfer impossible. Not enough funds to transfer.");
         }
 
         // Transfert
@@ -68,7 +68,9 @@ public class BankAccountService {
         accountCredited.setBalance(accountCredited.getBalance() + transfer.getAmount());
 
         // Call the TransactionService to create the trasactions
-        transactionService.createTransaction(accountDebited.getAccountNumber(), "Virement vers compte n°" + accountCredited.getAccountNumber(), transfer.getAmount());
-        transactionService.createTransaction(accountCredited.getAccountNumber(), "Virement recu  du compte n°" + accountDebited.getAccountNumber(), transfer.getAmount());
+        transactionService.createTransaction(accountDebited.getAccountNumber(), "Transfer towards account nr " + accountCredited.getAccountNumber(), transfer.getAmount());
+        transactionService.createTransaction(accountCredited.getAccountNumber(), "Transfer from account nr " + accountDebited.getAccountNumber(), transfer.getAmount());
     }
+
+
 }

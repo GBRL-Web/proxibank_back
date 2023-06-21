@@ -4,7 +4,6 @@ import com.projet.proxibanque_groupe3.model.AuthInfos;
 import com.projet.proxibanque_groupe3.model.Employee;
 import com.projet.proxibanque_groupe3.persistance.AuthRepository;
 import com.projet.proxibanque_groupe3.persistance.EmployeeRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,9 +11,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
-public class AuthServiceTest {
+class AuthServiceTest {
 
     @Mock
     private AuthRepository authRepository;
@@ -29,7 +30,7 @@ public class AuthServiceTest {
     private AuthInfos authInfos;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
 
         employee = new Employee();
@@ -43,31 +44,31 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void testCreateAuthInfos() {
+    void testCreateAuthInfos() {
         AuthInfos result = authService.createAuthinfos(employee);
-        Assertions.assertEquals("djohn", result.getLogin());
-        Assertions.assertEquals("djohn", result.getPassword());
+        assertEquals("djohn", result.getLogin());
+        assertEquals("djohn", result.getPassword());
     }
 
     @Test
-    public void testCheckCredentialsWithValidAuthInfos() throws Exception {
+    void testCheckCredentialsWithValidAuthInfos() throws Exception {
         when(authRepository.findByLogin("djohn")).thenReturn(Optional.of(authInfos));
         Employee result = authService.checkCredentials(authInfos);
-        Assertions.assertEquals(employee, result);
+        assertEquals(employee, result);
     }
 
     @Test
-    public void testCheckCredentialsWithInvalidLogin() {
+    void testCheckCredentialsWithInvalidLogin() {
         when(authRepository.findByLogin("jdoe")).thenReturn(Optional.empty());
-        Assertions.assertThrows(Exception.class, () -> authService.checkCredentials(authInfos));
+        assertThrows(Exception.class, () -> authService.checkCredentials(authInfos));
     }
 
     @Test
-    public void testCheckCredentialsWithInvalidPassword() {
+    void testCheckCredentialsWithInvalidPassword() {
         AuthInfos authInfosToTest = new AuthInfos();
         authInfosToTest.setLogin("jdoe");
         authInfosToTest.setPassword("wrong_password");
         when(authRepository.findByLogin("jdoe")).thenReturn(Optional.of(authInfos));
-        Assertions.assertThrows(Exception.class, () -> authService.checkCredentials(authInfosToTest));
+        assertThrows(Exception.class, () -> authService.checkCredentials(authInfosToTest));
     }
 }

@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/bankaccounts")
+@RequestMapping("/accounts")
 public class BankAccountController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class BankAccountController {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/client/{id}")
+    @GetMapping("client/{id}")
     public ResponseEntity<Set<BankAccount>> getBankAccountsByIdClient(@PathVariable Integer id){
         Optional<Set<BankAccount>> bankAccounts = bankAccountService.getBankAccountsByIdClientFromDatabase(id);
         if(bankAccounts.isPresent()){
@@ -52,9 +52,9 @@ public class BankAccountController {
     }
 
     @CrossOrigin(origins = "*")
-    @GetMapping("/accountnumber/{accountNumber}")
-    public ResponseEntity<BankAccount> getBankAccountByAccountNumber(@PathVariable Integer accountNumber){
-        Optional<BankAccount> bankAccount = bankAccountService.getBankAccountByAccountNumber(accountNumber);
+    @GetMapping("all-accts/{accNum}")
+    public ResponseEntity<BankAccount> getBankAccountByAccountNumber(@PathVariable Integer accNum){
+        Optional<BankAccount> bankAccount = bankAccountService.getBankAccountByAccountNumber(accNum);
         if (bankAccount.isPresent()){
             return ResponseEntity.ok().body(bankAccount.get());
         }
@@ -64,10 +64,10 @@ public class BankAccountController {
     }
 
     @CrossOrigin(origins = "*")
-    @PostMapping("/transfer")
+    @PostMapping("all-accts/{accNum}/transfer")
     public ResponseEntity<String> postTransfer(@Valid @RequestBody Transfer transfer){
         try {
-            bankAccountService.makeTransfer(transfer);
+            bankAccountService.transferTo(transfer);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

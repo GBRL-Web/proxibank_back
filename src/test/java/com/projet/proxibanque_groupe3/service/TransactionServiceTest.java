@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.*;
 
 class TransactionServiceTest {
@@ -25,7 +26,7 @@ class TransactionServiceTest {
     private TransactionService transactionService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
@@ -34,9 +35,9 @@ class TransactionServiceTest {
         List<Transaction> expectedTransactions = new ArrayList<>();
         expectedTransactions.add(new Transaction(LocalDate.now().minusDays(4), 1234, "Test transaction 1", 100.0f));
         expectedTransactions.add(new Transaction(LocalDate.now().minusDays(3), 5678, "Test transaction 2", 200.0f));
-        when(transactionRepository.getAllByDateBetween(any(LocalDate.class), any(LocalDate.class))).thenReturn(expectedTransactions);
+        when(transactionRepository.getAllByDateBetween(nullable(LocalDate.class), nullable(LocalDate.class))).thenReturn(expectedTransactions);
         List<Transaction> actualTransactions = transactionService.getTransactionFromDatabase("weekly");
-        verify(transactionRepository, times(1)).getAllByDateBetween(any(LocalDate.class), any(LocalDate.class));
+        verify(transactionRepository, times(1)).getAllByDateBetween(nullable(LocalDate.class), nullable(LocalDate.class));
         assertEquals(expectedTransactions, actualTransactions);
     }
 
@@ -45,9 +46,9 @@ class TransactionServiceTest {
         List<Transaction> expectedTransactions = new ArrayList<>();
         expectedTransactions.add(new Transaction(LocalDate.now().minusDays(10), 1234, "Test transaction 1", 100.0f));
         expectedTransactions.add(new Transaction(LocalDate.now().minusDays(2), 5678, "Test transaction 2", 200.0f));
-        when(transactionRepository.getAllByDateBetween(any(LocalDate.class), any(LocalDate.class))).thenReturn(expectedTransactions);
+        when(transactionRepository.getAllByDateBetween(nullable(LocalDate.class), nullable(LocalDate.class))).thenReturn(expectedTransactions);
         List<Transaction> actualTransactions = transactionService.getTransactionFromDatabase("monthly");
-        verify(transactionRepository, times(1)).getAllByDateBetween(any(LocalDate.class), any(LocalDate.class));
+        verify(transactionRepository, times(1)).getAllByDateBetween(nullable(LocalDate.class), nullable(LocalDate.class));
         assertEquals(expectedTransactions, actualTransactions);
     }
 
@@ -62,8 +63,8 @@ class TransactionServiceTest {
     @Test
     void testCreateTransaction() {
         Transaction expectedTransaction = new Transaction(LocalDate.now(), 1234, "Test transaction", 100.0f);
-        when(transactionRepository.save(any(Transaction.class))).thenReturn(expectedTransaction);
+        when(transactionRepository.save(nullable(Transaction.class))).thenReturn(expectedTransaction);
         transactionService.createTransaction(1234, "Test transaction", 100.0f);
-        verify(transactionRepository, times(1)).save(any(Transaction.class));
+        verify(transactionRepository, times(1)).save(nullable(Transaction.class));
     }
 }

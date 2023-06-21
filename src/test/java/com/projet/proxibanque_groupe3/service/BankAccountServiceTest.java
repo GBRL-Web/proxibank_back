@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -100,7 +101,7 @@ void makeTransfert_shouldThrowException_whenAccountNumbersAreTheSame() {
     transfert.setAmount(1000f);
 
     // Call the method and assert that an exception is thrown
-    assertThrows(Exception.class, () -> bankAccountService.makeTransfer(transfert));
+    assertThrows(Exception.class, () -> bankAccountService.transferTo(transfert));
 }
 
 @Test
@@ -123,7 +124,7 @@ void makeTransfert_shouldThrowException_whenDebitedAccountHasInsufficientBalance
     when(bankAccountRepository.getBankAccountByAccountNumber(accountDebited.getAccountNumber())).thenReturn(Optional.of(accountDebited));
 
     // Call the method and assert that an exception is thrown
-    assertThrows(Exception.class, () -> bankAccountService.makeTransfer(transfert));
+    assertThrows(Exception.class, () -> bankAccountService.transferTo(transfert));
 }
 
 @Test
@@ -148,13 +149,13 @@ void makeTransfert_shouldMakeTransfert_whenDataIsValid() throws Exception {
     when(bankAccountRepository.getBankAccountByAccountNumber(accountCredited.getAccountNumber())).thenReturn(Optional.of(accountCredited));
 
     // Call the method
-    bankAccountService.makeTransfer(transfert);
+    bankAccountService.transferTo(transfert);
 
     // Assert that the balances of both accounts are updated
     assertEquals(3000.0f, accountDebited.getBalance());
     assertEquals(5000.0f, accountCredited.getBalance());
 
     // Verify that the transactionService.createTransaction method is called twice
-    verify(transactionService, times(2)).createTransaction(anyInt(), anyString(), anyFloat());
+    verify(transactionService, times(2)).createTransaction(anyInt(), nullable(String.class), anyFloat());
 }
 }

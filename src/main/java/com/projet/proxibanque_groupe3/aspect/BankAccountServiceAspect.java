@@ -15,8 +15,10 @@ public class BankAccountServiceAspect {
 
     private Logger logger = LoggerFactory.getLogger(ProxibanqueGroupe3Application.class);
 
-    @Around("execution(* com.projet.proxibanque_groupe3.service.BankAccountService.makeTransfert(..)) &&" +
-            "args(transfert,..)")
+    @Around("""
+            execution(* com.projet.proxibanque_groupe3.service.BankAccountService.makeTransfert(..)) &&\
+            args(transfert,..)\
+            """)
     public void logTransfert(ProceedingJoinPoint joinPoint, Transfer transfert) throws Throwable {
         joinPoint.proceed();
         logger.warn("Transfert du compte n°" + transfert.getFromAccount() + " au compte n°" + transfert.getToAccount() + " et d'un montant de " + transfert.getAmount() + " euros.");
