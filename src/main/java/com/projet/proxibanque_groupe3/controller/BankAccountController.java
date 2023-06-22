@@ -40,7 +40,7 @@ public class BankAccountController {
         return errors;
     }
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("client/{id}")
     public ResponseEntity<Set<BankAccount>> getBankAccountsByIdClient(@PathVariable Integer id){
         Optional<Set<BankAccount>> bankAccounts = bankAccountService.getBankAccountsByIdClientFromDatabase(id);
@@ -51,7 +51,7 @@ public class BankAccountController {
         }
     }
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("all-accts/{accNum}")
     public ResponseEntity<BankAccount> getBankAccountByAccountNumber(@PathVariable Integer accNum){
         Optional<BankAccount> bankAccount = bankAccountService.getBankAccountByAccountNumber(accNum);
@@ -63,8 +63,8 @@ public class BankAccountController {
         }
     }
 
-    @CrossOrigin(origins = "*")
-    @PostMapping("all-accts/{accNum}/transfer")
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("transfer")
     public ResponseEntity<String> postTransfer(@Valid @RequestBody Transfer transfer){
         try {
             bankAccountService.transferTo(transfer);

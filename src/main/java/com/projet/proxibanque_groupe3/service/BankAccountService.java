@@ -48,7 +48,7 @@ public class BankAccountService {
     }
 
     public void transferTo(Transfer transfer) throws Exception {
-
+   
         // Check if the accounts are differents
         if (transfer.getToAccount().equals(transfer.getFromAccount())){
             logger.warn("Transfer impossible. The transfer account numbers used are identical.");
