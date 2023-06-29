@@ -1,6 +1,6 @@
 package com.projet.proxibanque_groupe3.service;
 
-import com.projet.proxibanque_groupe3.ProxibanqueGroupe3Application;
+import com.projet.proxibanque_groupe3.exceptions.NotFoundException;
 import com.projet.proxibanque_groupe3.model.BankAccount;
 import com.projet.proxibanque_groupe3.model.CheckingAccount;
 import com.projet.proxibanque_groupe3.model.Transfer;
@@ -22,55 +22,61 @@ public class BankAccountService {
     @Autowired
     private TransactionService transactionService;
 
-    private Logger logger = LoggerFactory.getLogger(ProxibanqueGroupe3Application.class);
+    private Logger logger = LoggerFactory.getLogger(BankAccountService.class);
 
     public Optional<Set<BankAccount>> getBankAccountsByIdClientFromDatabase(Integer id){
-        Optional<Set<BankAccount>> bankAccounts = null;
         try {
-            bankAccounts = bankAccountRepository.getBankAccountsByClient_Id((long)id);
-            logger.info("Client - ID [" + id + "] Successful retrieval of accounts from database.");
+            Optional<Set<BankAccount>> bankAccounts = bankAccountRepository.getByClientId((long)id);
+            logger.info("Client - ID [{}] Successful retrieval of accounts from the database.", id);
+            return bankAccounts;
         } catch (Exception e){
             logger.error(e.getMessage());
+            return Optional.empty();
         }
-        return bankAccounts;
     }
 
     public Optional<BankAccount> getBankAccountByAccountNumber(Integer accountnumber){
-
-        Optional<BankAccount> bankAccount = null;
         try {
-            bankAccount = bankAccountRepository.getBankAccountByAccountNumber(accountnumber);
-            logger.info("Account [" + accountnumber + "] Successfully retrieved from database.");
+            Optional<BankAccount> bankAccount = bankAccountRepository.getByAccountNumber(accountnumber);
+            logger.info("Account [{}] Successfully retrieved from the database.", accountnumber);
+            return bankAccount;
         } catch (Exception e){
             logger.error(e.getMessage());
+            return Optional.empty();
         }
-        return bankAccount;
     }
 
-    public void transferTo(Transfer transfer) throws Exception {
-   
-        // Check if the accounts are differents
+    public void transferTo(Transfer transfer) throws NotFoundException {
+        // Check if the accounts are different
         if (transfer.getToAccount().equals(transfer.getFromAccount())){
             logger.warn("Transfer impossible. The transfer account numbers used are identical.");
-            throw new Exception("Transfer impossible. The transfer account numbers used are identical.");
+            throw new NotFoundException("Transfer impossible. The transfer account numbers used are identical.");
         }
 
         // Check debited account solvability
-        BankAccount accountDebited = bankAccountRepository.getBankAccountByAccountNumber(transfer.getFromAccount()).get();
+        Optional<BankAccount> optionalAccountDebited = bankAccountRepository.getByAccountNumber(transfer.getFromAccount());
+        if (optionalAccountDebited.isEmpty()) {
+            logger.warn("Transfer impossible. Debited account not found.");
+            throw new NotFoundException("Transfer impossible. Debited account not found.");
+        }
+        BankAccount accountDebited = optionalAccountDebited.get();
         if(accountDebited instanceof CheckingAccount c && (c.getBalance() + c.getOverdraft() < transfer.getAmount())){
             logger.warn("Transfer impossible. Not enough funds to transfer.");
-            throw new Exception("Transfer impossible. Not enough funds to transfer.");
+            throw new NotFoundException("Transfer impossible. Not enough funds to transfer.");
         }
 
-        // Transfert
-        BankAccount accountCredited = bankAccountRepository.getBankAccountByAccountNumber(transfer.getToAccount()).get();
+        // Transfer
+        Optional<BankAccount> optionalAccountCredited = bankAccountRepository.getByAccountNumber(transfer.getToAccount());
+        if (optionalAccountCredited.isEmpty()) {
+            logger.warn("Transfer impossible. Credited account not found.");
+            throw new NotFoundException("Transfer impossible. Credited account not found.");
+        }
+        BankAccount accountCredited = optionalAccountCredited.get();
         accountDebited.setBalance(accountDebited.getBalance() - transfer.getAmount());
         accountCredited.setBalance(accountCredited.getBalance() + transfer.getAmount());
 
-        // Call the TransactionService to create the trasactions
+        // Call the TransactionService to create the transactions
         transactionService.createTransaction(accountDebited.getAccountNumber(), "Transfer towards account nr " + accountCredited.getAccountNumber(), transfer.getAmount());
         transactionService.createTransaction(accountCredited.getAccountNumber(), "Transfer from account nr " + accountDebited.getAccountNumber(), transfer.getAmount());
     }
-
-
 }

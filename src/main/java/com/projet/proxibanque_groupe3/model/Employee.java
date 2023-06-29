@@ -27,7 +27,7 @@ public class Employee {
 
     @JsonIgnore
     @OneToMany(mappedBy="director", cascade = CascadeType.PERSIST)
-    private Set<Employee> counselors = new HashSet<Employee>();
+    private Set<Employee> counselors = new HashSet<>();
 
     // Fin de la relation entre objets de la même table
 
@@ -42,7 +42,7 @@ public class Employee {
 
     @JsonIgnore
     @OneToMany(mappedBy="counselor", cascade = CascadeType.PERSIST)
-    private Set<Client> clients = new HashSet<Client>();
+    private Set<Client> clients = new HashSet<>();
 
     public Employee() {
     }

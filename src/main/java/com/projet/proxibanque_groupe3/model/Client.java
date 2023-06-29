@@ -45,7 +45,7 @@ public class Client {
     private Employee counselor;
 
     @OneToMany(mappedBy="client", cascade = CascadeType.PERSIST)
-    private Set<BankAccount> bankAccounts = new HashSet<BankAccount>();
+    private Set<BankAccount> bankAccounts = new HashSet<>();
 
     public Client() {
     }

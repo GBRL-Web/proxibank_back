@@ -1,6 +1,6 @@
 package com.projet.proxibanque_groupe3.service;
 
-import com.projet.proxibanque_groupe3.ProxibanqueGroupe3Application;
+import com.projet.proxibanque_groupe3.exceptions.NotFoundException;
 import com.projet.proxibanque_groupe3.model.Transaction;
 import com.projet.proxibanque_groupe3.persistance.TransactionRepository;
 import org.slf4j.Logger;
@@ -20,14 +20,14 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    private Logger logger = LoggerFactory.getLogger(ProxibanqueGroupe3Application.class);
+    private Logger logger = LoggerFactory.getLogger(TransactionService.class);
 
-    public List<Transaction> getTransactionFromDatabase(String flag) throws Exception {
+    public List<Transaction> getTransactionFromDatabase(String flag) throws NotFoundException {
         if (!flag.equals("monthly") && !flag.equals("weekly")) {
             logger.error("Récupérations des transactions impossible : flag invalide.");
-            throw new Exception("Flag invalide.");
+            throw new NotFoundException("Flag invalide.");
         }
-        List<Transaction> transactions = new ArrayList<Transaction>();
+        List<Transaction> transactions = new ArrayList<>();
         try {
             if (flag.equals("weekly")) {
                 // Récupérer premier jour de la semaine
@@ -51,7 +51,7 @@ public class TransactionService {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        logger.info("Transactions récupérées avec le flag " + flag);
+        logger.info("Transactions récupérées avec le flag {} .", flag);
         return transactions;
     }
 

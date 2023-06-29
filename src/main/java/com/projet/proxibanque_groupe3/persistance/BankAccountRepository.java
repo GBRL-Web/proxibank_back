@@ -8,6 +8,6 @@ import java.util.Set;
 
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
 
-    Optional<Set<BankAccount>> getBankAccountsByClient_Id(Long id);
-    Optional<BankAccount> getBankAccountByAccountNumber(Integer accountNumber);
+    Optional<Set<BankAccount>> getByClientId(Long id);
+    Optional<BankAccount> getByAccountNumber(Integer accountNumber);
 }

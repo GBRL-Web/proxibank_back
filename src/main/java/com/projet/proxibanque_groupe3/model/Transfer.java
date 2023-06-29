@@ -5,14 +5,14 @@ import jakarta.validation.constraints.NotNull;
 
 public class Transfer {
 
-    @NotNull(message = "Id du compte débité manquant.")
+    @NotNull(message = "Missing debited account ID.")
     private Integer accountNumberDebited;
 
-    @NotNull(message = "Numéro de compte du compte crédité manquant.")
+    @NotNull(message = "Missing credited account number.")
     private Integer accountNumberCredited;
 
-    @NotNull(message = "Montant du transfert manquant.")
-    @Min(value = 0, message = "Le montant du transfert ne peut être négatif.")
+    @NotNull(message = "Missing transfer amount.")
+    @Min(value = 0, message = "Transfer amount cannot be negative.")
     private Float amount;
 
     public Transfer(Integer accountNumberDebited, Integer accountNumberCredited, Float amount) {

@@ -1,6 +1,5 @@
 package com.projet.proxibanque_groupe3.aspect;
 
-import com.projet.proxibanque_groupe3.ProxibanqueGroupe3Application;
 import com.projet.proxibanque_groupe3.model.Transfer;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -13,14 +12,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BankAccountServiceAspect {
 
-    private Logger logger = LoggerFactory.getLogger(ProxibanqueGroupe3Application.class);
+    private Logger logger = LoggerFactory.getLogger(BankAccountServiceAspect.class);
 
     @Around("""
-            execution(* com.projet.proxibanque_groupe3.service.BankAccountService.makeTransfert(..)) &&\
-            args(transfert,..)\
+            execution(* com.projet.proxibanque_groupe3.service.BankAccountService.makeTransfer(..)) &&\
+            args(transfer,..)\
             """)
     public void logTransfer(ProceedingJoinPoint joinPoint, Transfer transfer) throws Throwable {
         joinPoint.proceed();
-        logger.warn("Transfer from account n°%d to account n°%d of %.2f euros.", transfer.getFromAccount(), transfer.getToAccount(), transfer.getAmount());
+        logger.warn("Transfer from account n° {} to account n° {} of {} euros.", transfer.getFromAccount(), transfer.getToAccount(), transfer.getAmount());
     }
 }

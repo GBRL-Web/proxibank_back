@@ -1,6 +1,5 @@
 package com.projet.proxibanque_groupe3.service;
 
-import com.projet.proxibanque_groupe3.ProxibanqueGroupe3Application;
 import com.projet.proxibanque_groupe3.model.Client;
 import com.projet.proxibanque_groupe3.model.Employee;
 import com.projet.proxibanque_groupe3.persistance.ClientRepository;
@@ -23,43 +22,47 @@ public class ClientService {
     @Autowired
     private EmployeeRepository employeRepository;
 
-    private Logger logger = LoggerFactory.getLogger(ProxibanqueGroupe3Application.class);
+    private Logger logger = LoggerFactory.getLogger(ClientService.class);
 
-    public Optional<Set<Client>> getClientByCounselorId(Integer id){
+    public Optional<Set<Client>> getClientByCounselorId(Integer id) {
 
-        Optional<Set<Client>> clients = null;
         try {
-            clients= this.clientRepository.getClientsByCounselor_Id((long)id);
-            logger.info("Liste des clients du conseiller d'id " + id + " récupérée avec succès.");
-        } catch ( Exception e){
-            logger.error(e.getMessage());
-        }
-        return clients;
-    }
-
-    public Client createClient(Integer idCounselor, Client newClient) {
-        try {
-            Employee counselor = this.employeRepository.findById((long) idCounselor).get();
-            newClient.setCounselor(counselor);
-            counselor.addClient(newClient);
-            Client createdClient = this.clientRepository.save(newClient);
-            return createdClient;
+            Optional<Set<Client>> clients = this.clientRepository.getByCounselorId((long) id);
+            logger.info("Liste des clients du conseiller d'id {} récupérée avec succès.", id);
+            return clients;
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return null; 
+            return Optional.empty();
         }
     }
-    
 
-    public void editClient(Client newClient){
-        Client client = clientRepository.findById(newClient.getId()).get();
+public Client createClient(Integer idCounselor, Client newClient) {
+    try {
+        Employee counselor = this.employeRepository.findById((long) idCounselor).orElse(null);
+        if (counselor != null) {
+            newClient.setCounselor(counselor);
+            counselor.addClient(newClient);
+            return this.clientRepository.save(newClient);
+        } else {
+            // Handle the case when counselor is not found
+            logger.warn("Counselor not found for ID: {}", idCounselor);
+            return null;
+        }
+    } catch (Exception e) {
+        logger.error(e.getMessage());
+        return null;
+    }
+}
+
+public void editClient(Client newClient) {
+    clientRepository.findById(newClient.getId()).ifPresent(client -> {
         newClient.setCounselor(client.getCounselor());
-
         try {
             clientRepository.save(newClient);
-            logger.info("Le client d'id " + newClient.getId() + " a été modifié avec succès.");
-        } catch ( Exception e){
+            logger.info("The client with ID {} has been successfully modified.", newClient.getId());
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
-    }
+    });
+}
 }

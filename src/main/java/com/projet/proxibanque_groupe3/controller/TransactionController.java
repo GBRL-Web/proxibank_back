@@ -19,7 +19,7 @@ public class TransactionController {
     @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{flag}")
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable String flag){
-        List<Transaction> transactions = new ArrayList<Transaction>();
+        List<Transaction> transactions = new ArrayList<>();
         try {
             transactions = transactionService.getTransactionFromDatabase(flag);
         } catch (Exception e){

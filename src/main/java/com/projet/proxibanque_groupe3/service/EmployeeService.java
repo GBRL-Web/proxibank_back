@@ -1,6 +1,5 @@
 package com.projet.proxibanque_groupe3.service;
 
-import com.projet.proxibanque_groupe3.ProxibanqueGroupe3Application;
 import com.projet.proxibanque_groupe3.model.Employee;
 import com.projet.proxibanque_groupe3.persistance.EmployeeRepository;
 import org.slf4j.Logger;
@@ -17,16 +16,16 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    private Logger logger = LoggerFactory.getLogger(ProxibanqueGroupe3Application.class);
+    private Logger logger = LoggerFactory.getLogger(EmployeeService.class);
 
     public Optional<Set<Employee>> getCounselorsFromDatabase(){
-        Optional<Set<Employee>> counselors = null;
         try {
-            counselors = employeeRepository.findByClientsNotNull();
+            Optional<Set<Employee>> counselors = employeeRepository.findByClientsNotNull();
             logger.info("Liste des conseillers récupérée avec succès.");
+            return counselors;
         } catch (Exception e){
             logger.error(e.getMessage());
+            return Optional.empty();
         }
-        return counselors;
     }
 }

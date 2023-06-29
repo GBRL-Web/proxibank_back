@@ -46,24 +46,24 @@ public class InitDb {
         authInfosCounselor3.setEmployee(counselor3);
 
         // Création des clients
-        Client client1 = new Client("Racine", "Jean", "10 Rue de la Liberté", "75001", "Paris", "0123456789");
-        Client client2 = new Client("Fonce", "Paul", "25 Avenue des Champs-Élysées", "75008", "Paris", "0678901234");
-        Client client3 = new Client("Saigne", "Marie", "5 Rue du Commerce", "69002", "Lyon", "0456789123");
-        Client client4 = new Client("Foutpaune", "Claire", "12 Rue des Lilas", "33000", "Bordeaux", "0567891234");
-        Client client5 = new Client("Balle", "Pierre", "8 Place de la République", "44000", "Nantes", "0789123456");
-        Client client6 = new Client("Bonbeurre", "Luc", "15 Rue du Vieux Port", "13001", "Marseille", "0891234567");
-        Client client7 = new Client("Tanrien", "Sophie", "20 Rue des Roses", "59000", "Lille", "0123456789");
-        Client client8 = new Client("Conépa", "Thomas", "3 Avenue des Acacias", "67000", "Strasbourg", "0678901234");
-        Client client9 = new Client("Terre", "Emma", "6 Rue des Artisans", "54000", "Nancy", "0456789123");
-        Client client10 = new Client("Tanleloulerenaretlabelette", "Alex", "18 Rue de la Paix", "69003", "Lyon",
-                "0567891234");
-        Client client11 = new Client("Transene", "Laura", "9 Boulevard Saint-Michel", "75005", "Paris", "0678901234");
-        Client client12 = new Client("Tissipe", "David", "14 Avenue de la Gare", "67000", "Strasbourg", "0789123456");
-        Client client13 = new Client("Tanlamer", "Sophia", "22 Rue du Pont Neuf", "31000", "Toulouse", "0891234567");
-        Client client14 = new Client("Peste", "Hugo", "11 Rue des Violettes", "06000", "Nice", "0123456789");
-        Client client15 = new Client("Darmerie", "Julie", "7 Place de l'Église", "35000", "Rennes", "0678901234");
-        Client client16 = new Client("Cive", "Antoine", "4 Avenue de la Libération", "44000", "Nantes", "0456789123");
-        Client client17 = new Client("Breille", "Manon", "13 Rue des Moulins", "69004", "Lyon", "0567891234");
+Client client1 = new Client("Racine", "Jean", "10 Rue de la Liberté", "75001", "Paris", "0123456780");
+Client client2 = new Client("Fonce", "Paul", "25 Avenue des Champs-Élysées", "75008", "Paris", "0678901231");
+Client client3 = new Client("Saigne", "Marie", "5 Rue du Commerce", "69002", "Lyon", "0456789122");
+Client client4 = new Client("Foutpaune", "Claire", "12 Rue des Lilas", "33000", "Bordeaux", "0567891233");
+Client client5 = new Client("Balle", "Pierre", "8 Place de la République", "44000", "Nantes", "0789123454");
+Client client6 = new Client("Bonbeurre", "Luc", "15 Rue du Vieux Port", "13001", "Marseille", "0891234565");
+Client client7 = new Client("Tanrien", "Sophie", "20 Rue des Roses", "59000", "Lille", "0123456786");
+Client client8 = new Client("Conépa", "Thomas", "3 Avenue des Acacias", "67000", "Strasbourg", "0678901237");
+Client client9 = new Client("Terre", "Emma", "6 Rue des Artisans", "54000", "Nancy", "0456789128");
+Client client10 = new Client("Tanleloulerenaretlabelette", "Alex", "18 Rue de la Paix", "69003", "Lyon", "0567891239");
+Client client11 = new Client("Transene", "Laura", "9 Boulevard Saint-Michel", "75005", "Paris", "0678901230");
+Client client12 = new Client("Tissipe", "David", "14 Avenue de la Gare", "67000", "Strasbourg", "0789123451");
+Client client13 = new Client("Tanlamer", "Sophia", "22 Rue du Pont Neuf", "31000", "Toulouse", "0891234562");
+Client client14 = new Client("Peste", "Hugo", "11 Rue des Violettes", "06000", "Nice", "0123456783");
+Client client15 = new Client("Darmerie", "Julie", "7 Place de l'Église", "35000", "Rennes", "0678901234");
+Client client16 = new Client("Cive", "Antoine", "4 Avenue de la Libération", "44000", "Nantes", "0456789125");
+Client client17 = new Client("Breille", "Manon", "13 Rue des Moulins", "69004", "Lyon", "0567891236");
+
 
         // Création des comptes
         CheckingAccount checkingAccount1 = new CheckingAccount(5000F, 500F);
@@ -116,8 +116,6 @@ public class InitDb {
         // Affectation des clients aux conseillers
         director.addClient(client1);
         client1.setCounselor(director);
-        // counselor1.addClient(client1);
-        // client1.setCounselor(counselor1);
         counselor1.addClient(client2);
         client2.setCounselor(counselor1);
         counselor1.addClient(client3);

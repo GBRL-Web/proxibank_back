@@ -8,5 +8,5 @@ import java.util.Set;
 
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    public Optional<Set<Client>> getClientsByCounselor_Id(Long id);
+    public Optional<Set<Client>> getByCounselorId(Long id);
 }

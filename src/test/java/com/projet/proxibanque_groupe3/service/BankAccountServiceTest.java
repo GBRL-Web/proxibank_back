@@ -36,7 +36,7 @@ class BankAccountServiceTest {
     @Test
     void getBankAccountsByIdClientFromDatabase_shouldReturnEmptyOptional_whenRepositoryReturnsEmptyOptional() {
         // Arrange
-        when(bankAccountRepository.getBankAccountsByClient_Id(anyLong())).thenReturn(Optional.empty());
+        when(bankAccountRepository.getByClientId(anyLong())).thenReturn(Optional.empty());
 
         // Act
         Optional<Set<BankAccount>> bankAccounts = bankAccountService.getBankAccountsByIdClientFromDatabase(123);
@@ -55,7 +55,7 @@ class BankAccountServiceTest {
         Set<BankAccount> bankAccountSet = new HashSet<>();
         bankAccountSet.add(bankAccount1);
         bankAccountSet.add(bankAccount2);
-        when(bankAccountRepository.getBankAccountsByClient_Id(anyLong())).thenReturn(Optional.of(bankAccountSet));
+        when(bankAccountRepository.getByClientId(anyLong())).thenReturn(Optional.of(bankAccountSet));
 
         // Act
         Optional<Set<BankAccount>> bankAccounts = bankAccountService.getBankAccountsByIdClientFromDatabase(123);
@@ -68,7 +68,7 @@ class BankAccountServiceTest {
     @Test
     void getBankAccountByAccountNumber_shouldReturnEmptyOptional_whenRepositoryReturnsEmptyOptional() {
         // Arrange
-        when(bankAccountRepository.getBankAccountByAccountNumber(anyInt())).thenReturn(Optional.empty());
+        when(bankAccountRepository.getByAccountNumber(anyInt())).thenReturn(Optional.empty());
 
         // Act
         Optional<BankAccount> bankAccount = bankAccountService.getBankAccountByAccountNumber(123);
@@ -82,7 +82,7 @@ class BankAccountServiceTest {
         // Arrange
         BankAccount bankAccount = new CheckingAccount();
         bankAccount.setAccountNumber(111);
-        when(bankAccountRepository.getBankAccountByAccountNumber(anyInt())).thenReturn(Optional.of(bankAccount));
+        when(bankAccountRepository.getByAccountNumber(anyInt())).thenReturn(Optional.of(bankAccount));
 
         // Act
         Optional<BankAccount> returnedBankAccount = bankAccountService.getBankAccountByAccountNumber(123);
@@ -121,7 +121,7 @@ void makeTransfert_shouldThrowException_whenDebitedAccountHasInsufficientBalance
     transfert.setAmount(2000.0f);
 
     // Set up the mock for bankAccountRepository.getBankAccountByAccountNumber
-    when(bankAccountRepository.getBankAccountByAccountNumber(accountDebited.getAccountNumber())).thenReturn(Optional.of(accountDebited));
+    when(bankAccountRepository.getByAccountNumber(accountDebited.getAccountNumber())).thenReturn(Optional.of(accountDebited));
 
     // Call the method and assert that an exception is thrown
     assertThrows(Exception.class, () -> bankAccountService.transferTo(transfert));
@@ -145,8 +145,8 @@ void makeTransfert_shouldMakeTransfert_whenDataIsValid() throws Exception {
     transfert.setAmount(2000.0f);
 
     // Set up the mock for bankAccountRepository.getBankAccountByAccountNumber
-    when(bankAccountRepository.getBankAccountByAccountNumber(accountDebited.getAccountNumber())).thenReturn(Optional.of(accountDebited));
-    when(bankAccountRepository.getBankAccountByAccountNumber(accountCredited.getAccountNumber())).thenReturn(Optional.of(accountCredited));
+    when(bankAccountRepository.getByAccountNumber(accountDebited.getAccountNumber())).thenReturn(Optional.of(accountDebited));
+    when(bankAccountRepository.getByAccountNumber(accountCredited.getAccountNumber())).thenReturn(Optional.of(accountCredited));
 
     // Call the method
     bankAccountService.transferTo(transfert);
