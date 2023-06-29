@@ -39,7 +39,7 @@ public class ClientController {
         return errors;
     }
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/counselor/{id}")
     public ResponseEntity<Set<Client>> getClients(@PathVariable Integer id){
         Optional<Set<Client>> clients = clientService.getClientByCounselorId(id);
@@ -50,14 +50,14 @@ public class ClientController {
         }
     }
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping
     public ResponseEntity<Client> putClient(@Valid @RequestBody Client newClient){
         clientService.editClient(newClient);
         return ResponseEntity.ok().build();
     }
     
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(value = "/counselors/{idCounselor}", consumes = "application/json")
     public ResponseEntity<Client> postClient(@PathVariable Integer idCounselor, @Valid @RequestBody Client newClient) {
         Client createdClient = clientService.createClient(idCounselor, newClient);

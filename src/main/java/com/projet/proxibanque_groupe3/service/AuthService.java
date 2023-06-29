@@ -30,8 +30,8 @@ public class AuthService {
         // On recherche l'AuthInfo ayant ce login en bdd
         Optional<AuthInfos> authInfos = authRepository.findByLogin(authInfosToTest.getLogin());
         if (authInfos.isEmpty()) {
-            logger.error("Tentative de connexion échouée : login " + authInfosToTest.getLogin() + " inconnu.");
-            throw new Exception("Login inconnu.");
+            logger.error("Failed login attempt: unknown login %s.", authInfosToTest.getLogin());
+            throw new Exception("Unknown login attempt...");
         }
 
         // On vérifie que les password correspondent

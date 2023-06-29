@@ -19,7 +19,7 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/counselors")
     public ResponseEntity<Set<Employee>> getClients(){
         Optional<Set<Employee>> counselors = employeeService.getCounselorsFromDatabase();

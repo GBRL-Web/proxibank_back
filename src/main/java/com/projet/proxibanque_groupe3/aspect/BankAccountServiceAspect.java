@@ -19,8 +19,8 @@ public class BankAccountServiceAspect {
             execution(* com.projet.proxibanque_groupe3.service.BankAccountService.makeTransfert(..)) &&\
             args(transfert,..)\
             """)
-    public void logTransfert(ProceedingJoinPoint joinPoint, Transfer transfert) throws Throwable {
+    public void logTransfer(ProceedingJoinPoint joinPoint, Transfer transfer) throws Throwable {
         joinPoint.proceed();
-        logger.warn("Transfert du compte n°" + transfert.getFromAccount() + " au compte n°" + transfert.getToAccount() + " et d'un montant de " + transfert.getAmount() + " euros.");
+        logger.warn("Transfer from account n°%d to account n°%d of %.2f euros.", transfer.getFromAccount(), transfer.getToAccount(), transfer.getAmount());
     }
 }

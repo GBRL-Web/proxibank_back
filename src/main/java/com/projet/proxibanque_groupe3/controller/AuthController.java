@@ -36,7 +36,7 @@ public class AuthController {
         return errors;
     }
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody AuthInfos authInfos){
         LoginResponse response = new LoginResponse();

@@ -16,7 +16,7 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @CrossOrigin(origins = "*")
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{flag}")
     public ResponseEntity<List<Transaction>> getTransactions(@PathVariable String flag){
         List<Transaction> transactions = new ArrayList<Transaction>();
