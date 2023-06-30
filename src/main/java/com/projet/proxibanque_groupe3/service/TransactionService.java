@@ -24,8 +24,8 @@ public class TransactionService {
 
     public List<Transaction> getTransactionFromDatabase(String flag) throws NotFoundException {
         if (!flag.equals("monthly") && !flag.equals("weekly")) {
-            logger.error("Récupérations des transactions impossible : flag invalide.");
-            throw new NotFoundException("Flag invalide.");
+            logger.error("Transactions cannot be retrieved from database. Invalid flag: {}", flag);
+            throw new NotFoundException("Invalid flag : " + flag);
         }
         List<Transaction> transactions = new ArrayList<>();
         try {
@@ -51,7 +51,7 @@ public class TransactionService {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-        logger.info("Transactions récupérées avec le flag {} .", flag);
+        logger.info("Transactions recovered with flag: {} .", flag);
         return transactions;
     }
 

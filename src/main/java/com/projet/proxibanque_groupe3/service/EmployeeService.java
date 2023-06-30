@@ -21,7 +21,7 @@ public class EmployeeService {
     public Optional<Set<Employee>> getCounselorsFromDatabase(){
         try {
             Optional<Set<Employee>> counselors = employeeRepository.findByClientsNotNull();
-            logger.info("Liste des conseillers récupérée avec succès.");
+            logger.info("Counselors list successfully retrieved.");
             return counselors;
         } catch (Exception e){
             logger.error(e.getMessage());

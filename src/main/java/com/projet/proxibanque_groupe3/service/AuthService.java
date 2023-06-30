@@ -15,9 +15,9 @@ import java.util.Optional;
 public class AuthService {
 
     @Autowired
-    private AuthRepository authRepository;
+    AuthRepository authRepository;
 
-    private Logger logger = LoggerFactory.getLogger(AuthService.class);
+    Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     public AuthInfos createAuthinfos(Employee employee) {
         String temp = Character.toLowerCase(employee.getSurname().charAt(0)) + employee.getName().toLowerCase();

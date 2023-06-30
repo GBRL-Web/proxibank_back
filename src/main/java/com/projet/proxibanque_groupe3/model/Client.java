@@ -15,36 +15,36 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Pattern(regexp="^[A-Za-zÀ-ÿ]+$", message="Le champ prénom ne peut contenir que des lettres.")
-    @NotEmpty(message = "Le champ prénom ne peut être vide.")
+    @Pattern(regexp = "^[A-Za-zÀ-ÿ]+$", message = "The first name field can only contain letters.")
+    @NotEmpty(message = "The first name field cannot be empty.")
     private String name;
 
-    @Pattern(regexp="^[A-Za-zÀ-ÿ]+$", message="Le champ nom ne peut contenir que des lettres.")
-    @NotEmpty(message = "Le champ nom ne peut être vide.")
+    @Pattern(regexp = "^[A-Za-zÀ-ÿ]+$", message = "The last name field can only contain letters.")
+    @NotEmpty(message = "The last name field cannot be empty.")
     private String surname;
 
-    @Pattern(regexp="[0-9A-Za-zÀ-ÿ '-]+$", message="Le champ adresse ne peut contenir que des des chiffres, des lettres et des espaces.")
-    @NotEmpty(message = "Le champ adresse ne peut être vide.")
+    @Pattern(regexp = "[0-9A-Za-zÀ-ÿ '-]+$", message = "The address field can only contain numbers, letters, and spaces.")
+    @NotEmpty(message = "The address field cannot be empty.")
     private String address;
 
-    @Pattern(regexp="^[0-9]+$", message="Le champ code postal ne peut contenir que des chiffres.")
-    @NotEmpty(message = "Le champ code postal ne peut être vide.")
+    @Pattern(regexp = "^[0-9]+$", message = "The zip code field can only contain numbers.")
+    @NotEmpty(message = "The zip code field cannot be empty.")
     private String zip;
 
-    @Pattern(regexp="[A-Za-zÀ-ÿ '-]+$", message="Le champ ville ne peut contenir que des lettres.")
-    @NotEmpty(message = "Le champ ville ne peut être vide.")
+    @Pattern(regexp = "[A-Za-zÀ-ÿ '-]+$", message = "The city field can only contain letters.")
+    @NotEmpty(message = "The city field cannot be empty.")
     private String city;
 
-    @Pattern(regexp="^[0-9]+$", message="Le champ téléphone ne peut contenir que des chiffres.")
-    @NotEmpty(message = "Le champ téléphone ne peut être vide.")
+    @Pattern(regexp = "^[0-9]+$", message = "The telephone field can only contain numbers.")
+    @NotEmpty(message = "The telephone field cannot be empty.")
     private String tel;
 
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(name="counselor_id")
+    @JoinColumn(name = "counselor_id")
     private Employee counselor;
 
-    @OneToMany(mappedBy="client", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.PERSIST)
     private Set<BankAccount> bankAccounts = new HashSet<>();
 
     public Client() {
@@ -119,7 +119,15 @@ public class Client {
         this.counselor = counselor;
     }
 
-    public void addBankAccount(BankAccount bankAccount){
+    public void addBankAccount(BankAccount bankAccount) {
         this.bankAccounts.add(bankAccount);
+    }
+
+    public Set<BankAccount> getBankAccounts() {
+        return this.bankAccounts;
+    }
+
+    public void clearBankAccounts() {
+        this.bankAccounts = new HashSet<>();
     }
 }
